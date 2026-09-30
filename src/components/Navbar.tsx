@@ -8,6 +8,7 @@ interface NavbarProps {
   onReplaySketch?: () => void;
   mobileMenuOpen?: boolean;
   onToggleMobileMenu?: () => void;
+  onNavigate?: (id: string) => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -15,6 +16,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onReplaySketch,
   mobileMenuOpen: controlledMenuOpen,
   onToggleMobileMenu,
+  onNavigate,
 }) => {
   const [sfxActive, setSfxActive] = useState(false);
   const [uncontrolledMenuOpen, setUncontrolledMenuOpen] = useState(false);
@@ -85,41 +87,30 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Desktop Navigation Links */}
         <nav className="hidden lg:flex items-center gap-1 font-mono text-[13px]">
-          <a
-            href="#about"
-            onClick={() => sound.click()}
-            className="text-ash hover:text-white px-3 py-1.5 border border-transparent hover:border-border-subtle transition-all"
-          >
-            About
-          </a>
-          <a
-            href="#vision"
-            onClick={() => sound.click()}
-            className="text-ash hover:text-white px-3 py-1.5 border border-transparent hover:border-border-subtle transition-all"
-          >
-            Vision &amp; Mission
-          </a>
-          <a
-            href="#velora"
-            onClick={() => sound.click()}
-            className="text-ash hover:text-white px-3 py-1.5 border border-transparent hover:border-border-subtle transition-all"
-          >
-            Velora 1.0
-          </a>
-          <a
-            href="#council"
-            onClick={() => sound.click()}
-            className="text-ash hover:text-white px-3 py-1.5 border border-transparent hover:border-border-subtle transition-all"
-          >
-            Council
-          </a>
-          <a
-            href="#faq"
-            onClick={() => sound.click()}
-            className="text-ash hover:text-white px-3 py-1.5 border border-transparent hover:border-border-subtle transition-all"
-          >
-            FAQ
-          </a>
+          {[
+            { id: 'about', label: 'About' },
+            { id: 'vision', label: 'Vision & Mission' },
+            { id: 'velora', label: 'Velora 1.0' },
+            { id: 'council', label: 'Council' },
+            { id: 'faq', label: 'FAQ' },
+          ].map((item) => (
+            <a
+              key={item.id}
+              href={`#${item.id}`}
+              onClick={(e) => {
+                e.preventDefault();
+                sound.click();
+                if (onNavigate) {
+                  onNavigate(item.id);
+                } else {
+                  document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+              className="text-ash hover:text-white px-3 py-1.5 border border-transparent hover:border-border-subtle transition-all cursor-pointer"
+            >
+              {item.label}
+            </a>
+          ))}
         </nav>
 
         {/* Action Controls & Modal Trigger */}
@@ -160,20 +151,26 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {[
-            { href: '#about', label: '01 // ABOUT COUNCIL' },
-            { href: '#vision', label: '02 // VISION & MISSION' },
-            { href: '#velora', label: '03 // VELORA 1.0 (24HR HACKATHON)' },
-            { href: '#council', label: '04 // COUNCIL FILM REEL' },
-            { href: '#faq', label: '05 // FREQUENTLY ASKED QUESTIONS' },
+            { id: 'about', label: '01 // ABOUT COUNCIL' },
+            { id: 'vision', label: '02 // VISION & MISSION' },
+            { id: 'velora', label: '03 // VELORA 1.0 (24HR HACKATHON)' },
+            { id: 'council', label: '04 // COUNCIL FILM REEL' },
+            { id: 'faq', label: '05 // FREQUENTLY ASKED QUESTIONS' },
           ].map((item) => (
             <a
-              key={item.href}
-              href={item.href}
-              onClick={() => {
+              key={item.id}
+              href={`#${item.id}`}
+              onClick={(e) => {
+                e.preventDefault();
                 sound.click(650, 0.02);
                 toggleMenu();
+                if (onNavigate) {
+                  onNavigate(item.id);
+                } else {
+                  document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth' });
+                }
               }}
-              className="text-white hover:text-lime py-3 px-3 border border-border-subtle/40 bg-surface-dark/60 hover:bg-surface-dark flex items-center justify-between min-h-[48px] active:bg-surface-dark transition-colors rounded-sm"
+              className="text-white hover:text-lime py-3 px-3 border border-border-subtle/40 bg-surface-dark/60 hover:bg-surface-dark flex items-center justify-between min-h-[48px] active:bg-surface-dark transition-colors rounded-sm cursor-pointer"
             >
               <span className="font-bold tracking-wide">{item.label}</span>
               <span className="text-lime">→</span>

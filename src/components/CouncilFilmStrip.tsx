@@ -100,8 +100,12 @@ export const CouncilFilmStrip: React.FC<CouncilFilmStripProps> = ({
     lastPointerXRef.current = e.clientX;
     velocityRef.current = 0;
 
-    const target = e.currentTarget as HTMLElement;
-    target.setPointerCapture(e.pointerId);
+    if (e.pointerType === 'mouse') {
+      const target = e.currentTarget as HTMLElement;
+      try {
+        target.setPointerCapture(e.pointerId);
+      } catch (err) {}
+    }
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
@@ -132,9 +136,11 @@ export const CouncilFilmStrip: React.FC<CouncilFilmStripProps> = ({
     isPointerDownRef.current = false;
     setIsDragging(false);
 
-    try {
-      (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
-    } catch (err) {}
+    if (e.pointerType === 'mouse') {
+      try {
+        (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+      } catch (err) {}
+    }
 
     // Subtle tactile mechanical click on release
     sound.click(500, 0.02);

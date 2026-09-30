@@ -1,8 +1,17 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-export const ThreePapercraftCanvas: React.FC = () => {
+interface ThreePapercraftCanvasProps {
+  isPaused?: boolean;
+}
+
+export const ThreePapercraftCanvas: React.FC<ThreePapercraftCanvasProps> = ({ isPaused = false }) => {
   const mountRef = useRef<HTMLDivElement>(null);
+  const isPausedRef = useRef(isPaused);
+
+  useEffect(() => {
+    isPausedRef.current = isPaused;
+  }, [isPaused]);
 
   useEffect(() => {
     const container = mountRef.current;
@@ -204,6 +213,7 @@ export const ThreePapercraftCanvas: React.FC = () => {
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
+      if (isPausedRef.current) return;
       const elapsed = clock.getElapsedTime();
 
       // Smooth Cursor Interpolation with Aerodynamic Inertia

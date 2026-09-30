@@ -6,12 +6,14 @@ interface MobileBottomDockProps {
   onOpenSquadModal: () => void;
   onToggleMobileMenu: () => void;
   isMobileMenuOpen: boolean;
+  onNavigate?: (id: string) => void;
 }
 
 export const MobileBottomDock: React.FC<MobileBottomDockProps> = ({
   onOpenSquadModal,
   onToggleMobileMenu,
   isMobileMenuOpen,
+  onNavigate,
 }) => {
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = useRef(0);
@@ -37,9 +39,13 @@ export const MobileBottomDock: React.FC<MobileBottomDockProps> = ({
 
   const handleScrollTo = (id: string) => {
     sound.click(650, 0.03);
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+    if (onNavigate) {
+      onNavigate(id);
+    } else {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 

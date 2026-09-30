@@ -29,14 +29,24 @@ export const App: React.FC = () => {
       return;
     }
 
-    // Initialize Lenis Inertia Scroll with native high-performance autoRaf
+    // Only enable Lenis on non-touch desktop devices (width >= 1024px)
+    // On mobile and tablets, native hardware-accelerated 120Hz momentum scroll is preserved
+    const isTouchDevice =
+      'ontouchstart' in window ||
+      navigator.maxTouchPoints > 0 ||
+      window.innerWidth < 1024;
+
+    if (isTouchDevice) {
+      return;
+    }
+
+    // Initialize Lenis Inertia Scroll for desktop mouse wheel
     const lenis = new Lenis({
       autoRaf: true,
       lerp: 0.09,
       duration: 1.1,
       smoothWheel: true,
       wheelMultiplier: 0.95,
-      touchMultiplier: 1.2,
     });
 
     setLenisInstance(lenis);
@@ -49,10 +59,18 @@ export const App: React.FC = () => {
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
     if (!el) return;
+
+    const navOffset = window.innerWidth < 768 ? 64 : 76;
+    const elementPosition = el.getBoundingClientRect().top;
+    const targetOffset = Math.max(0, elementPosition + window.pageYOffset - navOffset);
+
     if (lenisInstance) {
-      lenisInstance.scrollTo(el, { offset: -64, duration: 1.2 });
+      lenisInstance.scrollTo(targetOffset, { duration: 1.1 });
     } else {
-      el.scrollIntoView({ behavior: 'smooth' });
+      window.scrollTo({
+        top: targetOffset,
+        behavior: 'smooth',
+      });
     }
   };
 
@@ -72,13 +90,14 @@ export const App: React.FC = () => {
       )}
 
       {/* Global Fixed Flight Canvas: Origami Folds in Hero ➔ Becomes Cursor Flight Companion */}
-      <ThreePapercraftCanvas />
+      <ThreePapercraftCanvas isPaused={loaderActive} />
 
       {/* Navigation */}
       <Navbar
         onOpenSquadModal={() => setSquadModalOpen(true)}
         mobileMenuOpen={isMobileMenuOpen}
         onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        onNavigate={scrollToSection}
         onReplaySketch={() => {
           if (lenisInstance) {
             lenisInstance.scrollTo(0, { immediate: true });
@@ -107,6 +126,7 @@ export const App: React.FC = () => {
         onOpenSquadModal={() => setSquadModalOpen(true)}
         onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         isMobileMenuOpen={isMobileMenuOpen}
+        onNavigate={scrollToSection}
       />
 
       {/* Squad Registration Modal */}
