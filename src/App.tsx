@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import 'lenis/dist/lenis.css';
-import Lenis from 'lenis';
+import React, { useState } from 'react';
 import { CipherHandwrittenLoader } from './components/CipherHandwrittenLoader';
 import { ThreePapercraftCanvas } from './components/ThreePapercraftCanvas';
-import { useStringTune } from './utils/stringTune';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { Manifesto } from './components/Manifesto';
@@ -16,45 +13,9 @@ import { SquadModal } from './components/SquadModal';
 import { MobileBottomDock } from './components/MobileBottomDock';
 
 export const App: React.FC = () => {
-  useStringTune();
   const [loaderActive, setLoaderActive] = useState(true);
   const [squadModalOpen, setSquadModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [lenisInstance, setLenisInstance] = useState<Lenis | null>(null);
-
-  useEffect(() => {
-    // Check prefers-reduced-motion
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setLoaderActive(false);
-      return;
-    }
-
-    // Only enable Lenis on non-touch desktop devices (width >= 1024px)
-    // On mobile and tablets, native hardware-accelerated 120Hz momentum scroll is preserved
-    const isTouchDevice =
-      'ontouchstart' in window ||
-      navigator.maxTouchPoints > 0 ||
-      window.innerWidth < 1024;
-
-    if (isTouchDevice) {
-      return;
-    }
-
-    // Initialize Lenis Inertia Scroll for desktop mouse wheel
-    const lenis = new Lenis({
-      autoRaf: true,
-      lerp: 0.09,
-      duration: 1.1,
-      smoothWheel: true,
-      wheelMultiplier: 0.95,
-    });
-
-    setLenisInstance(lenis);
-
-    return () => {
-      lenis.destroy();
-    };
-  }, []);
 
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
@@ -64,14 +25,10 @@ export const App: React.FC = () => {
     const elementPosition = el.getBoundingClientRect().top;
     const targetOffset = Math.max(0, elementPosition + window.pageYOffset - navOffset);
 
-    if (lenisInstance) {
-      lenisInstance.scrollTo(targetOffset, { duration: 1.1 });
-    } else {
-      window.scrollTo({
-        top: targetOffset,
-        behavior: 'smooth',
-      });
-    }
+    window.scrollTo({
+      top: targetOffset,
+      behavior: 'smooth',
+    });
   };
 
   return (
@@ -81,9 +38,6 @@ export const App: React.FC = () => {
         <CipherHandwrittenLoader
           onComplete={() => {
             setLoaderActive(false);
-            if (lenisInstance) {
-              lenisInstance.scrollTo(0, { immediate: true });
-            }
             window.scrollTo({ top: 0, behavior: 'instant' });
           }}
         />
@@ -99,9 +53,6 @@ export const App: React.FC = () => {
         onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         onNavigate={scrollToSection}
         onReplaySketch={() => {
-          if (lenisInstance) {
-            lenisInstance.scrollTo(0, { immediate: true });
-          }
           window.scrollTo({ top: 0, behavior: 'instant' });
           setLoaderActive(true);
         }}

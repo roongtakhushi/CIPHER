@@ -22,20 +22,18 @@
 html {
   margin: 0;
   padding: 0;
-  height: 100%;
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: auto;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
   padding: 0;
-  min-height: 100%;
+  min-height: 100vh;
   background-color: var(--color-canvas);
   color: #DFE2EF;
   font-family: 'Inter', sans-serif;
-  overflow-x: clip;
-  overflow-y: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
 

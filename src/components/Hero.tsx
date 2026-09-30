@@ -50,74 +50,35 @@ export const Hero: React.FC<HeroProps> = ({ onExploreVelora, onMeetCouncil }) =>
       return;
     }
 
-    // Anime.js timeline orchestration for artsy sketch reveals
-    const tl = anime.timeline({
-      easing: 'spring(1, 80, 10, 0)',
-      duration: 1000,
+    // Fast, crisp parallel entrance reveal so cards are visible immediately
+    anime({
+      targets: ['.hero-badge-tag', '.hero-title-line', '.hero-body-text', '.hero-action-group', '.hero-doodle-card', '.hero-stat-card'],
+      opacity: [0, 1],
+      translateY: [12, 0],
+      delay: anime.stagger(50, { start: 30 }),
+      duration: 400,
+      easing: 'easeOutCubic',
     });
 
-    tl.add({
-      targets: '.hero-badge-tag',
-      translateY: [-20, 0],
-      opacity: [0, 1],
-      duration: 600,
-    })
-      .add(
-        {
-          targets: '.hero-title-line',
-          translateY: [40, 0],
-          opacity: [0, 1],
-          delay: anime.stagger(120),
-          duration: 800,
-        },
-        '-=400'
-      )
-      .add(
-        {
-          targets: underlineRef.current,
-          strokeDashoffset: [anime.setDashoffset, 0],
-          easing: 'easeOutSine',
-          duration: 900,
-        },
-        '-=400'
-      )
-      .add(
-        {
-          targets: highlightLoopRef.current,
-          strokeDashoffset: [anime.setDashoffset, 0],
-          easing: 'easeOutSine',
-          duration: 800,
-        },
-        '-=600'
-      )
-      .add(
-        {
-          targets: '.hero-body-text',
-          translateY: [20, 0],
-          opacity: [0, 1],
-          duration: 600,
-        },
-        '-=500'
-      )
-      .add(
-        {
-          targets: '.hero-action-group',
-          translateY: [20, 0],
-          opacity: [0, 1],
-          duration: 600,
-        },
-        '-=400'
-      )
-      .add(
-        {
-          targets: '.hero-doodle-card',
-          scale: [0.92, 1],
-          opacity: [0, 1],
-          delay: anime.stagger(100),
-          duration: 700,
-        },
-        '-=400'
-      );
+    if (underlineRef.current) {
+      anime({
+        targets: underlineRef.current,
+        strokeDashoffset: [anime.setDashoffset, 0],
+        easing: 'easeOutSine',
+        duration: 450,
+        delay: 150,
+      });
+    }
+
+    if (highlightLoopRef.current) {
+      anime({
+        targets: highlightLoopRef.current,
+        strokeDashoffset: [anime.setDashoffset, 0],
+        easing: 'easeOutSine',
+        duration: 450,
+        delay: 200,
+      });
+    }
   }, []);
 
   const handleCoffeeClick = (e: React.MouseEvent) => {
