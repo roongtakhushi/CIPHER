@@ -1,0 +1,269 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-canvas: #0A0E17;
+  --color-dark: #121826;
+  --color-paper: #F3EFE3;
+  --color-lime: #C6FF3D;
+  --color-pink: #FF4FA3;
+  --color-tape: #FFD84D;
+  --color-ash: #A8AFC0;
+  --color-border: #1F293D;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-canvas);
+  color: #DFE2EF;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Corkboard Paper Texture */
+.corkboard-texture {
+  background-color: #F3EFE3;
+  background-image: 
+    radial-gradient(#262A34 0.75px, transparent 0.75px),
+    radial-gradient(#8D937B 0.6px, transparent 0.6px);
+  background-size: 20px 20px, 32px 32px;
+  background-position: 0 0, 10px 10px;
+}
+
+/* HARD OFFSET SHADOW SYSTEM (NO SOFT BLURS PER DESIGN.md) */
+.shadow-hard-sm {
+  box-shadow: 2px 2px 0px #000000;
+}
+.shadow-hard-md {
+  box-shadow: 4px 4px 0px #000000;
+}
+.shadow-hard-lg {
+  box-shadow: 8px 8px 0px #000000;
+}
+.shadow-hard-card {
+  box-shadow: 5px 5px 0px #0A0E17;
+}
+
+/* BUTTONS PER DESIGN.md SPEC (Mobile Ergonomic min-h: 48px) */
+.btn-terminal-primary {
+  background-color: #C6FF3D;
+  color: #0A0E17;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 24px;
+  padding: 12px 24px;
+  min-height: 48px;
+  border-radius: 0px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.15s cubic-bezier(0.2, 0, 0, 1);
+  box-shadow: 3px 3px 0px #000000;
+  text-decoration: none;
+  user-select: none;
+}
+.btn-terminal-primary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 3px 3px 0px #FF4FA3;
+}
+.btn-terminal-primary:active {
+  transform: translate(0px, 0px);
+  box-shadow: 1px 1px 0px #FF4FA3;
+}
+
+.btn-paper-secondary {
+  background-color: #F3EFE3;
+  color: #0A0E17;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 24px;
+  padding: 10px 22px;
+  min-height: 48px;
+  border: 2px solid #0A0E17;
+  border-radius: 0px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.15s cubic-bezier(0.2, 0, 0, 1);
+  box-shadow: 3px 3px 0px #0A0E17;
+  text-decoration: none;
+  user-select: none;
+}
+.btn-paper-secondary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 3px 3px 0px #C6FF3D;
+}
+.btn-paper-secondary:active {
+  transform: translate(0px, 0px);
+  box-shadow: 1px 1px 0px #C6FF3D;
+}
+
+.btn-ghost-action {
+  background-color: transparent;
+  color: #A8AFC0;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 11px 23px;
+  min-height: 48px;
+  border: 1px solid #A8AFC0;
+  border-radius: 0px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s cubic-bezier(0.2, 0, 0, 1);
+  text-decoration: none;
+  user-select: none;
+}
+.btn-ghost-action:hover {
+  border-color: #C6FF3D;
+  color: #C6FF3D;
+  background-color: #121826;
+  transform: translate(-1px, -1px);
+  box-shadow: 2px 2px 0px #C6FF3D;
+}
+
+/* WASHI TAPE TORN EDGE JAGGED CLIP-PATHS */
+.washi-tape {
+  position: absolute;
+  z-index: 20;
+  height: 24px;
+  box-shadow: 0 2px 0 #0A0E17;
+  pointer-events: none;
+  user-select: none;
+}
+.washi-tape-yellow {
+  background-color: rgba(255, 216, 77, 0.88);
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(0, 0, 0, 0.08) 5px, rgba(0, 0, 0, 0.08) 10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+.washi-tape-pink {
+  background-color: rgba(255, 79, 163, 0.88);
+  background-image: repeating-linear-gradient(-45deg, transparent, transparent 5px, rgba(0, 0, 0, 0.1) 5px, rgba(0, 0, 0, 0.1) 10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+.washi-tape-lime {
+  background-color: rgba(198, 255, 61, 0.88);
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 4px, rgba(0, 0, 0, 0.08) 4px, rgba(0, 0, 0, 0.08) 8px);
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.tape-torn-h {
+  clip-path: polygon(
+    0% 12%, 3% 0%, 97% 0%, 100% 15%,
+    98% 32%, 100% 48%, 97% 65%, 100% 82%, 97% 100%,
+    3% 100%, 0% 85%, 3% 68%, 0% 50%, 3% 30%
+  );
+}
+
+/* DIE-CUT STICKER BADGES */
+.die-cut-sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border: 2px solid #FFFFFF;
+  box-shadow: 2px 2px 0px #0A0E17;
+  user-select: none;
+  z-index: 15;
+}
+
+/* CLASSIFIED STAMP */
+.classified-stamp {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #FF334B;
+  border: 2px dashed #FF334B;
+  padding: 4px 12px;
+  background: rgba(255, 51, 75, 0.08);
+  user-select: none;
+}
+
+/* Pinned Card Rotation & Transitions */
+.pinned-card {
+  cursor: grab;
+  touch-action: none;
+}
+.pinned-card:hover {
+  box-shadow: 7px 7px 0px #0A0E17 !important;
+  z-index: 25 !important;
+}
+.pinned-card.is-dragging {
+  cursor: grabbing;
+  box-shadow: 12px 12px 0px #000000 !important;
+  z-index: 99 !important;
+}
+
+/* Accordion FAQ Item */
+.faq-item {
+  border: 1px solid #0A0E17;
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+.faq-item.active {
+  box-shadow: 6px 6px 0px #0A0E17 !important;
+}
+
+/* Responsive Mobile Overrides per DESIGN.md: Cards flatten flush */
+@media (max-width: 767px) {
+  .pinned-card {
+    transform: rotate(0deg) !important;
+  }
+}
+
+/* Keyframe animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+@keyframes marqueeTicker {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Safe Area Insets for Mobile */
+.pb-safe {
+  padding-bottom: max(16px, env(safe-area-inset-bottom, 16px));
+}
+.pb-safe-dock {
+  padding-bottom: max(80px, calc(env(safe-area-inset-bottom, 0px) + 72px));
+}
+
